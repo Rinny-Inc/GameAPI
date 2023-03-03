@@ -1,0 +1,4 @@
+main: io.noks.api.Game
+name: GameAPI
+version: 1.0
+auhtor: Noksio
