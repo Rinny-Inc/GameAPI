@@ -10,11 +10,11 @@ public class Team {
 	private List<UUID> red;
 	private List<UUID> yellow;
 	
-	public Team() {
-		this.blue = new ArrayList<>();
-		this.green = new ArrayList<>();
-		this.red = new ArrayList<>();
-		this.yellow = new ArrayList<>();
+	public Team(int playerPerTeam) {
+		this.blue = new ArrayList<UUID>(playerPerTeam);
+		this.green = new ArrayList<UUID>(playerPerTeam);
+		this.red = new ArrayList<UUID>(playerPerTeam);
+		this.yellow = new ArrayList<UUID>(playerPerTeam);
 	}
 	
 	public List<UUID> blue() {

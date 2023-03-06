@@ -15,10 +15,10 @@ public class Game extends JavaPlugin {
 	private Team teams;
 	private int maxPlayers;
 	
-	public Game(boolean teamGame, int maxPlayers) {
+	public Game(boolean teamGame, int maxPlayers, int teamSize) {
 		this.players = Lists.newArrayList();
 		this.state = GameState.WAITING;
-		this.teams = (teamGame ? new Team() : null);
+		this.teams = (teamGame ? new Team(teamSize) : null);
 		this.maxPlayers = maxPlayers;
 	}
 	
