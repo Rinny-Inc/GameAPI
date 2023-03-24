@@ -5,8 +5,9 @@ import java.util.UUID;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
+import io.noks.api.caches.TwoTeams;
+import io.noks.api.caches.FourTeams;
 import io.noks.api.caches.TeamOf2;
-import io.noks.api.caches.TeamOf4;
 import io.noks.api.enums.GameState;
 import net.minecraft.util.com.google.common.collect.Lists;
 
@@ -14,7 +15,8 @@ public class Game extends JavaPlugin {
 	private List<UUID> players;
 	private GameState state;
 	private TeamOf2 teamOf2;
-	private TeamOf4 teamOf4;
+	private TwoTeams twoTeams;
+	private FourTeams fourTeams;
 	private int maxPlayers;
 	
 	public Game(int maxPlayers) {
@@ -22,17 +24,17 @@ public class Game extends JavaPlugin {
 		this.state = GameState.WAITING;
 		this.maxPlayers = maxPlayers;
 	}
-	public Game(TeamOf2 teams, int maxPlayers) {
+	public Game(TwoTeams teams) {
 		this.players = Lists.newArrayList();
 		this.state = GameState.WAITING;
-		this.teamOf2 = teams;
-		this.maxPlayers = maxPlayers;
+		this.twoTeams = teams;
+		this.maxPlayers = teams.getMaxTeamSize() * 2;
 	}
-	public Game(TeamOf4 teams, int maxPlayers) {
+	public Game(FourTeams teams, int maxPlayers) {
 		this.players = Lists.newArrayList();
 		this.state = GameState.WAITING;
-		this.teamOf4 = teams;
-		this.maxPlayers = maxPlayers;
+		this.fourTeams = teams;
+		this.maxPlayers = teams.getMaxTeamSize() * 4;
 	}
 	
 	public List<UUID> getPlayers() {
@@ -40,26 +42,31 @@ public class Game extends JavaPlugin {
 	}
 	
 	public boolean isWinned() {
-		if (this.teamOf2 == null && this.teamOf4 == null) {
+		if (this.twoTeams == null && this.fourTeams == null) {
 			return this.players.size() == 1;
 		}
 		// TODO: CHECK IF THERE'S A KOTH AND CHECK IF THE KOTH IS WINNED BEFORE CHECKING IF TEAMS ARE EMPTY
 		int nonEmptyCount = 0;
 
-		if (this.teamOf2 != null) {
-			// TODO
+		if (this.twoTeams != null) {
+			if (!this.twoTeams.blue().isEmpty()) {
+				nonEmptyCount++;
+			}
+			if (!this.twoTeams.red().isEmpty()) {
+				nonEmptyCount++;
+			}
 		}
-		if (this.teamOf4 != null) {
-		    if (!this.teamOf4.blue().isEmpty()) {
+		if (this.fourTeams != null) {
+		    if (!this.fourTeams.blue().isEmpty()) {
 		        nonEmptyCount++;
 		    }
-		    if (!this.teamOf4.green().isEmpty()) {
+		    if (!this.fourTeams.green().isEmpty()) {
 		        nonEmptyCount++;
 		    }
-		    if (!this.teamOf4.red().isEmpty()) {
+		    if (!this.fourTeams.red().isEmpty()) {
 		        nonEmptyCount++;
 		    }
-		    if (!this.teamOf4.yellow().isEmpty()) {
+		    if (!this.fourTeams.yellow().isEmpty()) {
 		        nonEmptyCount++;
 		    }
 		}
@@ -68,5 +75,17 @@ public class Game extends JavaPlugin {
 
 	public boolean isPlayerInGame(UUID uuid) {
 		return this.players.contains(uuid);
+	}
+	
+	public void updateState(GameState newState) {
+		this.state = newState;
+	}
+	
+	public GameState getState() {
+		return this.state;
+	}
+	
+	public int getMaxPlayers() {
+		return this.maxPlayers;
 	}
 }
