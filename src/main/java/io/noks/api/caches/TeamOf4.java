@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class Team {
+public class TeamOf4 {
 	private List<UUID> blue;
 	private List<UUID> green;
 	private List<UUID> red;
 	private List<UUID> yellow;
 	
-	public Team(int playerPerTeam) {
+	public TeamOf4(int playerPerTeam) {
 		this.blue = new ArrayList<UUID>(playerPerTeam);
 		this.green = new ArrayList<UUID>(playerPerTeam);
 		this.red = new ArrayList<UUID>(playerPerTeam);
